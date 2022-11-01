@@ -1,0 +1,40 @@
+body{
+    background-color: lightblue;
+    /* background:-webkit-linear-gradient(-135deg,#c850c0,#4158d0);
+    background-repeat: no-repeat; */
+}
+
+
+div.content_body{
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    border: 3px solid black;
+    padding: 10px;
+    text-align: center;
+    vertical-align:middle;
+    margin-top: 15%;
+    border-radius: 5%;
+    background-color: white;
+}
+
+#submit{
+    background-color: #57b846;
+    width: 200px;
+    height: 50px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    border-radius: 100px;
+    color: white;
+}
+
+#submit:hover{
+    background-color: black;
+}
+
+input{
+    width: 200px;
+    height: 50px;
+    border-radius: 100px;
+    text-align: center;
+}

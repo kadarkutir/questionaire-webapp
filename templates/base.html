@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Questionaire app</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style/style.css') }}" />
+</head>
+
+<body>
+    <section class="hero is-primary is-fullheight">
+
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <div class="navbar-end">
+                            <a href="{{ url_for('login_home') }}" class="navbar-item">
+                                Home
+                            </a>
+                            <a href="{{ url_for('login') }}" class="navbar-item">
+                                Login
+                            </a>
+                            <a href="{{ url_for('signup') }}" class="navbar-item">
+                                Signup
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="content_body">
+            <div class="container has-text-centered">
+               {% block content %}
+               {% endblock %}
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
