@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Main page</title>
+        <title>Home</title>
         <link rel="stylesheet" href="{{ url_for('static',filename='style/style.css') }}" />
+        <script type="text/javascript" src="{{url_for('static', filename='js/questionaries.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/library.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/mine.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/profile.js')}}"></script>
     </head>
 
     <body>
-        <div class="content_body">
-            User logged in
+        <div class="navbar_home">
+            <ul class="navbar_home_list">
+                <li id="all"><a onclick="questions_main()">Questionnares</a></li>
+                <li id="library"><a onclick="library_main()">My library</a></li>
+                <li id="mine"><a onclick="mine_main()">My questionnares</a></li>
+                <li class="profile_button">
+                    <a class="drop_btn">{{ session.get('username') }}</a>
+                    <div class="dropdown_content">
+                        <a onclick="profile_main()">Profile</a>
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="mainframe">
+            <div class="welcome_page">
+                Questionnare webapp <br>
+                Checkout some of the questionnares: <br><br>
+                <a onclick="questions_main()">Here</a>
+            </div>
         </div>
     </body>
 </html>
