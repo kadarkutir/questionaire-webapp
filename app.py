@@ -21,11 +21,7 @@ db_con.run_sql_script(con,"db/initialize.sql")
 #Base temlate rendering
 @app.route("/")
 def start():
-    return redirect("/login_home")
-
-@app.route("/login_home")
-def login_home():
-    return render_template('login_home.html')
+    return redirect("/signup")
 
 @app.route("/login",methods=["GET","POST"])
 def login():
@@ -34,6 +30,10 @@ def login():
 @app.route("/signup",methods=["GET","POST"])
 def signup():
     return render_template('signup.html')
+
+@app.route("/signup_post_screen")
+def signup_post_screen():
+    return render_template('signup_redirect.html')
 
 #Signup and login routes
 @app.route("/signup_post",methods=["POST"])
@@ -53,7 +53,7 @@ def signup_post():
     db_con.add_user_to_db(con,username,hashed_password,email)
     con.commit()
 
-    return redirect("/login")
+    return redirect("/signup_post_screen")
 
 @app.route("/login_post",methods=["POST"])
 def login_post():
@@ -77,7 +77,7 @@ def login_post():
 @app.route("/logout")
 def logout():
     session["username"] = None
-    return redirect("/login_home")
+    return redirect("/login")
 
 
 
@@ -89,14 +89,6 @@ def index():
     print(session['username'])
     return render_template('index.html')
 
-
-#Get and fill questionnaries
-@app.route("/get_all_questionaries")
-def get_all_questionaries():
-    questionaries = db_con.get_all_questionaries_with_title_createdBy_createdAt(con)
-
-    return flask.jsonify(questionaries)
-
 @app.route("/get_user_data")
 def get_user_data():
     username = session.get('username')
@@ -105,21 +97,29 @@ def get_user_data():
 
     return flask.jsonify(user)
 
-global_title = ""
-@app.route("/fill/<title>")
-def fill(title):
-    global global_title
-    global_title = ""
-    global_title = title
 
-    if not session.get('username'):
-        return redirect("/login")
+#Get and fill questionnaries
+@app.route("/get_all_questionaries")
+def get_all_questionaries():
+    questionaries = db_con.get_all_questionaries_with_title_createdBy_createdAt(con)
 
-    return render_template('fill.html')
+    return flask.jsonify(questionaries)
 
-@app.route("/get_questions_for_questionnaire")
-def get_questions_for_questionnaire():
-    questions = db_con.get_questions_for_questionnare_by_title(con,global_title)
+# global_title = ""
+# @app.route("/fill/<title>")
+# def fill(title):
+#     global global_title
+#     global_title = ""
+#     global_title = title
+
+#     if not session.get('username'):
+#         return redirect("/login")
+
+#     return render_template('fill.html')
+
+@app.route("/get_questions_for_questionnaire/<title>")
+def get_questions_for_questionnaire(title):
+    questions = db_con.get_questions_for_questionnare_by_title(con,title)
 
     return flask.jsonify(questions)
 
@@ -184,6 +184,39 @@ def get_answers_by_user_and_title(title):
     return flask.jsonify(result)
 
 #Questionnaire creator routes
+@app.route("/get_own_questionnaries_by_user")
+def get_own_questionnaries_by_user():
+    user = session.get('username')
+
+    questions = db_con.get_own_questionnaries(con,user)
+
+    if questions == None:
+        return flask.jsonify("None")
+
+    return flask.jsonify(questions)
+
+@app.route("/get_answers_by_user_and_title_my_questionnare/<title>/<user>")
+def get_answers_by_user_and_title_my_questionnare(title,user):
+
+    questions = db_con.get_questions_for_questionnare_by_title(con,title)
+    answers = db_con.get_answers_from_user_by_username_and_title(con,user,title)
+
+    result = [0 for i in range(0,(len(questions)+len(answers)))]
+    result[0] = questions[0]
+    result[1] = user
+
+    dif = 1
+    for i in range(2,len(result),2):
+        result[i] = questions[i-dif]
+        dif += 1
+
+    dif = 2
+    for j in range(3,len(result),2):
+        result[j] = answers[j-dif]
+        dif+=1
+    
+    return flask.jsonify(result)
+
 
 #Own questionnaire answers wathcer routes
 
