@@ -29,15 +29,28 @@ function create_answer_all(data){
     h1.innerHTML = data[0];
     mainframe.appendChild(h1)
 
-    answer_box = document.createElement('div')
-    answer_box.classList.add('answer_box')
+    result_table = document.createElement('table')
+    result_table.classList.add('result_table_design')
+    tbody = document.createElement('tbody')
 
     for(let i = 1; i < data.length;i++){
-        p = document.createElement('p')
-        p.innerHTML = data[i];
-        answer_box.appendChild(p)
+        tr = document.createElement('tr')
+        td = document.createElement('td')
+        td.appendChild(document.createTextNode(data[i]))
+        tr.appendChild(td)
+        tbody.appendChild(tr)
     }
-    mainframe.appendChild(answer_box)
+
+    back_button = document.createElement('button')
+    back_button.innerHTML = "Back"
+    back_button.classList.add('back_button')
+    back_button.addEventListener('click', () => {
+        library_main()
+    })
+    
+    result_table.appendChild(tbody)
+    mainframe.appendChild(result_table)
+    mainframe.appendChild(back_button)
 }
 
 
@@ -68,7 +81,7 @@ function create_table(data){
         base = document.createElement('div')
         base.classList.add("profile")
         show = document.createElement("p")
-        show.innerHTML = "You havent answered any of the questionnaries"
+        show.innerHTML = "You havent answered any of the questionnaries :("
         base.appendChild(show)
         mainframe.appendChild(base)
     }else{
@@ -82,7 +95,7 @@ function create_table(data){
         th1.appendChild(document.createTextNode('Title'));
         tr.appendChild(th1)
         th2 = document.createElement('th');
-        th2.appendChild(document.createTextNode('Answered by'));
+        th2.appendChild(document.createTextNode('Created by'));
         tr.appendChild(th2)
         th3 = document.createElement('th');
         th3.appendChild(document.createTextNode('Answered at'));
@@ -111,7 +124,7 @@ function library_main(){
     mainframe.appendChild(h1)
 
     answer_table = document.createElement("table");
-    answer_table.classList.add("question_table");
+    answer_table.classList.add("general_table_design");
     answer_table.id = "table_a"
     mainframe.appendChild(answer_table)
 
