@@ -1,22 +1,29 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Sign Up</h3>
-    <div class="box">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="danger">
-                {{ messages[0] }}. Go to <a href="{{ url_for('login') }}">login page</a>.
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Signup</title>
+            <link rel="stylesheet" href="{{ url_for('static',filename='style/style.css') }}" />
+            <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
+        </head>
+    
+        <body>
+            <div class="content_body">
+                <h3>Sign Up</h3>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="danger">
+                            {{ messages[0] }}. Go to <a href="{{ url_for('login') }}">login page</a>.
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="/signup_post">
+                        <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
+                        <input class="input is-large" type="text" name="username" placeholder="Name" autofocus="">
+                        <input class="input is-large" type="password" name="password" placeholder="Password"><br>
+                        <button id="submit">Sign Up</button>
+                        <p>You already have an account</p>
+                        <p>Login in here: <a href="{{ url_for('login') }}">Login</a></p>
+                    </form>
             </div>
-        {% endif %}
-        {% endwith %}
-        <form method="POST" action="/signup_post">
-            <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-            <input class="input is-large" type="text" name="username" placeholder="Name" autofocus="">
-            <input class="input is-large" type="password" name="password" placeholder="Password"><br>
-            <button id="submit">Sign Up</button>
-        </form>
-    </div>
-</div>
-{% endblock %}
+        </body>
+    </html>
