@@ -88,6 +88,12 @@ class dbConnection():
         for q in questionaire:
             questionaries.append(list(q))
 
+        for q in questionaries:
+            q[2] = datetime.datetime.strptime(q[2],"%Y-%m-%d %H:%M:%S.%f")
+
+        for q in questionaries:
+            q[2] = datetime.datetime.strftime(q[2],"%Y/%m/%d %H:%M:%S")
+
 
         return questionaries
 
@@ -136,6 +142,19 @@ class dbConnection():
         for q in answer:
             answers.append(list(q))
 
+        for ans in answers:
+            creator = cur.execute("""
+            SELECT createdBy from questions WHERE title = ?
+            """,(ans[0],)).fetchone()
+            ans[1] = creator[0]
+
+        for q in answers:
+            q[2] = datetime.datetime.strptime(q[2],"%Y-%m-%d %H:%M:%S.%f")
+
+        for q in answers:
+            q[2] = datetime.datetime.strftime(q[2],"%Y/%m/%d %H:%M:%S")
+
+
 
         return answers
 
@@ -149,6 +168,41 @@ class dbConnection():
         return list(answers)
 
     #Getting own questionnaries
+    def get_own_questionnaries(self,con:sqlite3.Connection,user:str):
+        cur = con.cursor()
+
+        titles = cur.execute("""
+        SELECT title FROM questions WHERE createdBy = ?
+        """,(user,)).fetchall()
+
+        answers = []
+        for t in titles:
+            answer = cur.execute("""
+            SELECT title,answeredBy,answeredAt FROM answers where title = ?
+            """,(t[0],)).fetchall()
+            for ans in answer:
+                answers.append(list(ans))
+
+        for ans in answers:
+            createdAt = cur.execute("""
+            SELECT createdAt FROM questions where title = ?
+            """,(ans[0],)).fetchone()
+
+            ans.append(createdAt[0])
+
+        for q in answers:
+            q[2] = datetime.datetime.strptime(q[2],"%Y-%m-%d %H:%M:%S.%f")
+
+        for q in answers:
+            q[2] = datetime.datetime.strftime(q[2],"%Y/%m/%d %H:%M:%S")
+
+        for q in answers:
+            q[3] = datetime.datetime.strptime(q[3],"%Y-%m-%d %H:%M:%S.%f")
+
+        for q in answers:
+            q[3] = datetime.datetime.strftime(q[3],"%Y/%m/%d %H:%M:%S")
+
+        return answers
 
 
 
@@ -157,7 +211,25 @@ if __name__ == "__main__":
     p = "db/database.db"
     con =  conn.connect_to_db(p)
 
-    conn.add_questions_to_questions(con,"123's questionnarie","123","question1","question2","question3","question4","question5","question6","question7","question8","question9","question10")
+    questions = conn.get_questions_for_questionnare_by_title(con,"123's questionnarie")
+    answers = conn.get_answers_from_user_by_username_and_title(con,"qwe","123's questionnarie")
+
+    result = [0 for i in range(0,(len(questions)+len(answers)))]
+    print(len(result))
+    result[0] = questions[0]
+    result[1] = "qwe"
+
+    dif = 1
+    for i in range(2,len(result),2):
+        result[i] = questions[i-dif]
+        dif += 1
+
+    dif = 2
+    for j in range(3,len(result),2):
+        result[j] = answers[j-dif]
+        dif+=1
+
+    print(result)
 
     con.close()
     print("db closed")
