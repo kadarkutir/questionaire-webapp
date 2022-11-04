@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Succes!</title>
+            <link rel="stylesheet" href="{{ url_for('static',filename='style/style.css') }}" />
+            <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
+        </head>
+    
+        <body>
+            <div class="content_body">
+                <p>Thank you for signing up to this app!</p>
+                <p>You can login here: <a href="{{ url_for('login') }}">Login</a></p>
+            </div>
+        </body>
+    </html>
