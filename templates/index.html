@@ -5,31 +5,24 @@
         <link rel="stylesheet" href="{{ url_for('static',filename='style/style.css') }}" />
         <script type="text/javascript" src="{{url_for('static', filename='js/questionaries.js')}}"></script>
         <script type="text/javascript" src="{{url_for('static', filename='js/library.js')}}"></script>
-        <script type="text/javascript" src="{{url_for('static', filename='js/mine.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/my_questionnaries.js')}}"></script>
         <script type="text/javascript" src="{{url_for('static', filename='js/profile.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/navigation.js')}}"></script>
+        <link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
     </head>
 
     <body>
-        <div class="navbar_home">
-            <ul class="navbar_home_list">
-                <li id="all"><a onclick="questions_main()">Questionnares</a></li>
-                <li id="library"><a onclick="library_main()">My library</a></li>
-                <li id="mine"><a onclick="mine_main()">My questionnares</a></li>
-                <li class="profile_button">
-                    <a class="drop_btn">{{ session.get('username') }}</a>
-                    <div class="dropdown_content">
-                        <a onclick="profile_main()">Profile</a>
-                        <a href="{{ url_for('logout') }}">Logout</a>
-                    </div>
-                </li>
-            </ul>
+        <div id="mySidenav" class="sidenav">
+            <a onclick="questions_main()">Questionnares</a>
+            <a onclick="library_main()">My library</a>
+            <a onclick="my_questionnaries_main()">My questionnares</a>
         </div>
-        <div id="mainframe">
-            <div class="welcome_page">
-                Questionnare webapp <br>
-                Checkout some of the questionnares: <br><br>
-                <a onclick="questions_main()">Here</a>
-            </div>
+        <div id="mySidenavProfile" class="sidenavprofile">
+            <a onclick="profile_main()">Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
+        <div onclick="openNav()" class="openNav"><img src="static/img/menu.png" class="menu_img"></div>
+        <div onclick="openNavProfile()" class="openNavProfile"><img src="static/img/user.png" class="profile_img"></div>
+        <div id="mainframe"></div>
     </body>
 </html>
