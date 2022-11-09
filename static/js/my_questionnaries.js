@@ -16,7 +16,17 @@ function get_answers_for_questionnare(link){
     xmlHttp.onload = function(){
         rsp2 = JSON.parse(xmlHttp.response)
         create_answers_by_user(rsp2)
-        console.log(rsp2)
+    }
+    xmlHttp.send()
+}
+
+function get_answers_on_own_questionnare(link){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET",link,true)
+    xmlHttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+    xmlHttp.onload = function(){
+        rsp3 = JSON.parse(xmlHttp.response)
+        create_table_for_answers(rsp3)
     }
     xmlHttp.send()
 }
@@ -47,7 +57,6 @@ function create_answers_by_user(data2){
     }
 
     back_button = document.createElement('button')
-    back_button.innerHTML = "Back"
     back_button.classList.add('back_button')
     back_button.addEventListener('click',() => {
         my_questionnaries_main()
@@ -59,11 +68,11 @@ function create_answers_by_user(data2){
     mainframe.appendChild(back_button)
 }
 
-function makeCell_my_questionnaire(value,title,user){
+function makeCell_my_questionnaire(value,title){
     cell = document.createElement('td')
     cell.appendChild(document.createTextNode(value))
     cell.addEventListener('click',function(){
-        get_answers_for_questionnare("/get_answers_by_user_and_title_my_questionnare/"+title + "/" + user)
+        get_answers_on_own_questionnare("/get_all_answers_on_questionnare/"+title)
     })
 
     return cell
@@ -71,13 +80,88 @@ function makeCell_my_questionnaire(value,title,user){
 
 function makeRow_my_questionnaire(tbody,values){
     r = document.createElement('tr')
-    r.appendChild(makeCell_my_questionnaire(values[0],values[0],values[1]))
-    r.appendChild(makeCell_my_questionnaire(values[1],values[0],values[1]))
-    r.appendChild(makeCell_my_questionnaire(values[2],values[0],values[1]))
-    r.appendChild(makeCell_my_questionnaire(values[3],values[0],values[1]))
-
+    r.appendChild(makeCell_my_questionnaire(values[0],values[0]))
+    r.appendChild(makeCell_my_questionnaire(values[1],values[0]))
+    
     tbody.appendChild(r)
 }
+
+function makeCell_answers(value,title,user){
+    cell = document.createElement('td')
+    cell.appendChild(document.createTextNode(value))
+    cell.addEventListener('click',function(){
+        get_answers_for_questionnare("/get_answers_by_user_and_title_my_questionnare/"+title+"/"+user)
+    })
+
+    return cell
+}
+
+function makeRow_answers(tbody,values){
+    r = document.createElement('tr')
+    r.appendChild(makeCell_answers(values[1],values[0],values[1]))
+    r.appendChild(makeCell_answers(values[2],values[0],values[1]))
+    
+    tbody.appendChild(r)
+}
+
+
+function create_table_for_answers(data3){
+    if(data3.length == 0){
+        mainframe = document.getElementById("mainframe")
+        mainframe.innerHTML = ""
+        base = document.createElement('div')
+        base.classList.add("profile")
+        show = document.createElement("p")
+        show.innerHTML = "Noone answered your questionnare :("
+        base.appendChild(show)
+        mainframe.appendChild(base)
+
+        back_button = document.createElement('button')
+        back_button.classList.add('back_button')
+        back_button.addEventListener('click', () => {
+            my_questionnaries_main()
+        })
+
+        mainframe.appendChild(back_button)
+    }else{
+        mainframe = document.getElementById("mainframe")
+        mainframe.innerHTML = ""
+        h1 = document.createElement('h1')
+        h1.innerHTML = data3[0][0];
+        mainframe.appendChild(h1)
+
+        answer_table = document.createElement('table')
+        answer_table.classList.add('my_questions_answers_table')
+        thead = document.createElement('thead')
+        answer_tbody = document.createElement('tbody')
+
+        tr = document.createElement('tr');
+        th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode('Answered by'));
+        tr.appendChild(th1)
+        th2 = document.createElement('th');
+        th2.appendChild(document.createTextNode('Answered at'));
+        tr.appendChild(th2)
+        thead.appendChild(tr)
+
+        for(var i = 0;i < data3.length;i++){
+            makeRow_answers(answer_tbody,data3[i])
+        }
+
+        back_button = document.createElement('button')
+        back_button.classList.add('back_button')
+        back_button.addEventListener('click', () => {
+            my_questionnaries_main()
+        })
+
+        mainframe.appendChild(back_button)
+        answer_table.appendChild(thead);
+        answer_table.appendChild(answer_tbody);
+        mainframe.appendChild(answer_table)
+    }       
+}
+
+
 
 function create_table_mine(data){
     if(data.length == 0){
@@ -98,15 +182,9 @@ function create_table_mine(data){
         th1.appendChild(document.createTextNode('Title'));
         tr.appendChild(th1)
         th2 = document.createElement('th');
-        th2.appendChild(document.createTextNode('Answered by'));
+        th2.appendChild(document.createTextNode('Created at'));
         tr.appendChild(th2)
-        th3 = document.createElement('th');
-        th3.appendChild(document.createTextNode('Answered at'));
-        tr.appendChild(th3);
-        thead.appendChild(tr);
-        th4 = document.createElement('th');
-        th4.appendChild(document.createTextNode('Created at'));
-        tr.appendChild(th4)
+        thead.appendChild(tr)
 
         for(var i = 0;i < data.length;i++){
             makeRow_my_questionnaire(tbody,data[i])
@@ -126,6 +204,7 @@ function create_questions_for_questionnare(){
 
     creator_form = document.createElement("form")
     creator_form.method = "POST"
+    creator_form.action = "/add_question"
     creator_form.classList.add("quest_form")
 
     title = document.createElement('p')
@@ -167,7 +246,6 @@ function create_questions_for_questionnare(){
 
 
     back_button = document.createElement('button')
-    back_button.innerHTML = "Back"
     back_button.classList.add('back_button')
     back_button.addEventListener('click', () => {
         my_questionnaries_main()

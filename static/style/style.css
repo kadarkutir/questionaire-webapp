@@ -10,6 +10,8 @@ body{
 }
 /* General designs end */
 
+/* Login and Signup page design */
+
 div.content_body{
     margin-left: auto;
     margin-right: auto;
@@ -18,7 +20,7 @@ div.content_body{
     padding: 20px;
     text-align: center;
     vertical-align:middle;
-    margin-top: 15%;
+    margin-top: 10%;
     border-radius: 5%;
     background-color: white;
 }
@@ -48,11 +50,16 @@ div.content_body input{
 div.danger{
     background-color: red;
     width: 200px;
+    height: 60px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 10px;
     text-align: center;
     vertical-align: middle;
+    border-radius: 20px;
 }
+
+/* Login and Signup page design end */
 
 
 .q_div{
@@ -80,7 +87,7 @@ table.general_table_design td{
 }
 
 table.general_table_design tbody > tr:hover{
-    background-color: #555cbd;
+    background-color: grey;
 }
 
 table.general_table_design th{
@@ -356,7 +363,7 @@ table.my_questions_table th:last-child{
 }
 
 table.my_questions_table tr:hover{
-    background-color: #555cbd;
+    background-color: grey;
 }
 
 /* My questionnares design end */
@@ -373,11 +380,14 @@ p.my_q_answer_by{
 /* Back button design */
 
 button.back_button{
-    width: 100px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     position: fixed;
     bottom: 5px;
     left: 5px;
+    background-image: url(/static/img/back-button.png);
+    background-size: cover;
+    border: none;
 }
 
 /* Back button design end */
@@ -397,3 +407,42 @@ button.question_plus_button{
 }
 
 /* Questionnare add button design end */
+
+/* Answers for questionnare table design end */
+table.my_questions_answers_table{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 1000px;
+    border-collapse: collapse;
+}
+
+table.my_questions_answers_table td{
+    text-align: center;
+    border: #111 solid 1px;
+    padding: 10px;
+    width: 250px;
+    height: 50px;
+    cursor: pointer;
+}
+
+table.my_questions_answers_table th{
+    background-color: #111;
+    color:white;
+    padding: 10px;
+}
+
+table.my_questions_answers_table th:first-child{
+    border-top-left-radius: 30px;
+}
+
+table.my_questions_answers_table th:last-child{
+    border-top-right-radius: 30px;
+}
+
+table.my_questions_answers_table tr:hover{
+    background-color: grey;
+}
+
+/* Answers for questionnare table design end */
+

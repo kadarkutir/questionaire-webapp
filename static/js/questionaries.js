@@ -31,7 +31,7 @@ function create_questionaire(data){
     div_form = document.createElement('div')
     div_form.classList.add("quest_box")
     main_form = document.createElement('form')
-    main_form.action = "/fill_post"
+    main_form.action = "/fill_post/"+data[0]
     main_form.method = "POST"
     main_form.classList.add("quest_form")
 
@@ -62,7 +62,6 @@ function create_questionaire(data){
     main_form.appendChild(submit_button)
 
     back_button = document.createElement('button')
-    back_button.innerHTML = "Back"
     back_button.classList.add('back_button')
     back_button.addEventListener('click', () => {
         questions_main()

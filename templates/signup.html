@@ -12,14 +12,15 @@
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                         <div class="danger">
-                            {{ messages[0] }}. Go to <a href="{{ url_for('login') }}">login page</a>.
+                            {{ messages[0] }}
                         </div>
                     {% endif %}
                     {% endwith %}
                     <form method="POST" action="/signup_post">
-                        <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-                        <input class="input is-large" type="text" name="username" placeholder="Name" autofocus="">
-                        <input class="input is-large" type="password" name="password" placeholder="Password"><br>
+                        <input  type="email" name="email" placeholder="Email" autofocus="" required>
+                        <input  type="text" name="username" placeholder="Username" autofocus="" required>
+                        <input  type="password" name="password" placeholder="Password" required>
+                        <input  type="password" name="password_again" placeholder="Enter your password again" required><br>
                         <button id="submit">Sign Up</button>
                         <p>You already have an account</p>
                         <p>Login in here: <a href="{{ url_for('login') }}">Login</a></p>

@@ -42,7 +42,6 @@ function create_answer_all(data){
     }
 
     back_button = document.createElement('button')
-    back_button.innerHTML = "Back"
     back_button.classList.add('back_button')
     back_button.addEventListener('click', () => {
         library_main()

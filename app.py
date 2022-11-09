@@ -41,11 +41,16 @@ def signup_post():
     email = request.form.get('email')
     username = request.form.get('username')
     password = request.form.get('password')
+    password_again = request.form.get('password_again')
 
     user = db_con.get_user_exist_by_username(con,username)
 
     if user:
-        flash("User already exists")
+        flash("""User already exists.""")
+        return redirect("/signup")
+
+    if password != password_again:
+        flash("The passwords dont match.")
         return redirect("/signup")
 
     hashed_password=generate_password_hash(password, method='sha256')
@@ -105,18 +110,6 @@ def get_all_questionaries():
 
     return flask.jsonify(questionaries)
 
-# global_title = ""
-# @app.route("/fill/<title>")
-# def fill(title):
-#     global global_title
-#     global_title = ""
-#     global_title = title
-
-#     if not session.get('username'):
-#         return redirect("/login")
-
-#     return render_template('fill.html')
-
 @app.route("/get_questions_for_questionnaire/<title>")
 def get_questions_for_questionnaire(title):
     questions = db_con.get_questions_for_questionnare_by_title(con,title)
@@ -133,8 +126,8 @@ def check_user_filled(title):
     else:
         return flask.jsonify('False')
 
-@app.route("/fill_post", methods=["POST"])
-def fill_post():
+@app.route("/fill_post/<title>", methods=["POST"])
+def fill_post(title):
     answer1 = request.form.get("answer1")
     answer2 = request.form.get("answer2")
     answer3 = request.form.get("answer3")
@@ -146,9 +139,8 @@ def fill_post():
     answer9 = request.form.get("answer9")
     answer10 = request.form.get("answer10")
 
-    global global_title
     user = session.get("username")
-    db_con.add_answers_to_answers(con,global_title,user,answer1,answer2,answer3,answer4,answer5,answer6,answer7,answer8,answer9,answer10)
+    db_con.add_answers_to_answers(con,title,user,answer1,answer2,answer3,answer4,answer5,answer6,answer7,answer8,answer9,answer10)
 
     return redirect("/index")
 
@@ -217,9 +209,37 @@ def get_answers_by_user_and_title_my_questionnare(title,user):
     
     return flask.jsonify(result)
 
+@app.route("/get_all_answers_on_questionnare/<title>")
+def get_all_answers_on_questionnare(title):
+    
+    answers = db_con.get_all_answers_on_questionnare(con,title)
+
+    if answers == None:
+        return flask.jsonify("None")
+
+    return flask.jsonify(answers)
+
 
 #Own questionnaire answers wathcer routes
+@app.route("/add_question", methods=["POST"])
+def add_question():
+    title = request.form.get("title")
+    user = session.get("username")
 
+    question1 = request.form.get("question1")
+    question2 = request.form.get("question2")
+    question3 = request.form.get("question3")
+    question4 = request.form.get("question4")
+    question5 = request.form.get("question5")
+    question6 = request.form.get("question6")
+    question7 = request.form.get("question7")
+    question8 = request.form.get("question8")
+    question9 = request.form.get("question9")
+    question10 = request.form.get("question10")
+
+    db_con.add_questions_to_questions(con,title,user,question1,question2,question3,question4,question5,question6,question7,question8,question9,question10)
+
+    return redirect("/index")
 
 if __name__ == "__main__":
     app.run(debug=True,host="localhost",port=5000)
