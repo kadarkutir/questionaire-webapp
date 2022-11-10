@@ -65,18 +65,7 @@ class dbConnection():
 
         return list(user)
 
-    #Quetions adding and getting functions
-    def add_questions_to_questions(self,con:sqlite3.Connection,title:str,createdBy:str,question1:str,question2:str,question3:str,question4:str,question5:str,question6:str,question7:str,question8:str,question9:str,question10:str) -> None:
-        cur = con.cursor()
-
-        createdAt = datetime.datetime.now()
-
-        cur.execute("""
-        INSERT INTO questions (title,createdBy,question1,question2,question3,question4,question5,question6,question7,question8,question9,question10,createdAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
-        """,(title,createdBy,question1,question2,question3,question4,question5,question6,question7,question8,question9,question10,createdAt))
-        con.commit()
-        print("Questionaire added to db")
-
+    #Quetionnares functions
     def get_all_questionaries_with_title_createdBy_createdAt(self,con:sqlite3.Connection) -> list:
         cur = con.cursor()
 
@@ -118,8 +107,6 @@ class dbConnection():
         else:
             return True
 
-
-    #Answers adding and getting functions
     def add_answers_to_answers(self,con:sqlite3.Connection,title:str,answeredBy:str,answer1:str,answer2:str,answer3:str,answer4:str,answer5:str,answer6:str,answer7:str,answer8:str,answer9:str,answer10:str):
         cur = con.cursor()
 
@@ -131,6 +118,8 @@ class dbConnection():
         con.commit()
         print("Answers saved to db")
 
+
+    #Library functions
     def get_all_answers_by_user(self,con:sqlite3.Connection,user:str):
         cur = con.cursor()
 
@@ -167,7 +156,7 @@ class dbConnection():
 
         return list(answers)
 
-    #Getting own questionnaries
+    #My questionnares functions
     def get_own_questionnaries(self,con:sqlite3.Connection,user:str):
         cur = con.cursor()
 
@@ -178,21 +167,6 @@ class dbConnection():
         answers = []
         for t in titles:
             answers.append(list(t))
-
-        # answers = []
-        # for t in titles:
-        #     answer = cur.execute("""
-        #     SELECT title,answeredBy,answeredAt FROM answers where title = ?
-        #     """,(t[0],)).fetchall()
-        #     for ans in answer:
-        #         answers.append(list(ans))
-
-        # for ans in answers:
-        #     createdAt = cur.execute("""
-        #     SELECT createdAt FROM questions where title = ?
-        #     """,(ans[0],)).fetchone()
-
-        #     ans.append(createdAt[0])
 
         for q in answers:
             q[1] = datetime.datetime.strptime(q[1],"%Y-%m-%d %H:%M:%S.%f")
@@ -223,20 +197,13 @@ class dbConnection():
 
         return answers
 
-        
+    def add_questions_to_questions(self,con:sqlite3.Connection,title:str,createdBy:str,question1:str,question2:str,question3:str,question4:str,question5:str,question6:str,question7:str,question8:str,question9:str,question10:str) -> None:
+        cur = con.cursor()
 
+        createdAt = datetime.datetime.now()
 
-
-if __name__ == "__main__":
-    conn = dbConnection()
-    p = "db/database.db"
-    con =  conn.connect_to_db(p)
-
-    print(conn.get_all_answers_on_questionnare(con,"123's questionnarie"))
-
-    con.close()
-    print("db closed")
-
-
-
-
+        cur.execute("""
+        INSERT INTO questions (title,createdBy,question1,question2,question3,question4,question5,question6,question7,question8,question9,question10,createdAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """,(title,createdBy,question1,question2,question3,question4,question5,question6,question7,question8,question9,question10,createdAt))
+        con.commit()
+        print("Questionaire added to db")
