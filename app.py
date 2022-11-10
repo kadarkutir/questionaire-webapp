@@ -35,6 +35,20 @@ def signup():
 def signup_post_screen():
     return render_template('signup_redirect.html')
 
+@app.route("/logout")
+def logout():
+    session["username"] = None
+    return redirect("/login")
+
+@app.route("/index")
+def index():
+    if not session.get('username'):
+        return redirect("/login")
+
+    print(session['username'])
+    return render_template('index.html')
+
+
 #Signup and login routes
 @app.route("/signup_post",methods=["POST"])
 def signup_post():
@@ -79,21 +93,7 @@ def login_post():
         flash("User not found \n Check your username and password")
         return redirect("/login")
 
-@app.route("/logout")
-def logout():
-    session["username"] = None
-    return redirect("/login")
-
-
-
-@app.route("/index")
-def index():
-    if not session.get('username'):
-        return redirect("/login")
-
-    print(session['username'])
-    return render_template('index.html')
-
+#Profile data 
 @app.route("/get_user_data")
 def get_user_data():
     username = session.get('username')
@@ -144,9 +144,9 @@ def fill_post(title):
 
     return redirect("/index")
 
-#Answer showing and checking routes
-@app.route("/get_answers_by_user")
-def get_answers_by_user():
+#Library functions to show answers
+@app.route("/get_all_answer_by_user")
+def get_all_answer_by_user():
     answers = db_con.get_all_answers_by_user(con,session.get('username'))
 
     if answers == None:
@@ -175,7 +175,7 @@ def get_answers_by_user_and_title(title):
     
     return flask.jsonify(result)
 
-#Questionnaire creator routes
+#User's own questionnares functions
 @app.route("/get_own_questionnaries_by_user")
 def get_own_questionnaries_by_user():
     user = session.get('username')
@@ -220,7 +220,7 @@ def get_all_answers_on_questionnare(title):
     return flask.jsonify(answers)
 
 
-#Own questionnaire answers wathcer routes
+#Questionnare creator function
 @app.route("/add_question", methods=["POST"])
 def add_question():
     title = request.form.get("title")
@@ -241,5 +241,6 @@ def add_question():
 
     return redirect("/index")
 
+#Main function
 if __name__ == "__main__":
     app.run(debug=True,host="localhost",port=5000)
