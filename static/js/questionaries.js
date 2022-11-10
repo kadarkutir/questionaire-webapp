@@ -1,10 +1,15 @@
-function get_questionaries(){
+// Create a questionnare
+function check_user_filled(link){
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET","/get_all_questionaries",true)
+    xmlHttp.open("GET","/check_user_filled/"+link,true)
     xmlHttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
     xmlHttp.onload = function(){
         rsp = JSON.parse(xmlHttp.response)
-        create_table_question(rsp)
+        if(rsp == "True"){
+            alert("You already filled this questionnaire\n"+link)
+        }else{
+            create_questionaire_from_data(link)
+        }
     }
     xmlHttp.send()
 }
@@ -72,31 +77,26 @@ function create_questionaire(data){
     mainframe.appendChild(back_button)
 }
 
+// Get all questionnares
+function get_questionaries(){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET","/get_all_questionaries",true)
+    xmlHttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+    xmlHttp.onload = function(){
+        rsp = JSON.parse(xmlHttp.response)
+        create_table_question(rsp)
+    }
+    xmlHttp.send()
+}
 
 function makeCell(value,link){
     cell = document.createElement('td')
     cell.appendChild(document.createTextNode(value))
     cell.addEventListener('click',function(){
-        // let np = window.open('/fill/'+link,"_self")
         check_user_filled(link)
     })
 
     return cell
-}
-
-function check_user_filled(link){
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET","/check_user_filled/"+link,true)
-    xmlHttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
-    xmlHttp.onload = function(){
-        rsp = JSON.parse(xmlHttp.response)
-        if(rsp == "True"){
-            alert("You already filled this questionnaire\n"+link)
-        }else{
-            create_questionaire_from_data(link)
-        }
-    }
-    xmlHttp.send()
 }
 
 function makeRow(tbody,values){
@@ -134,6 +134,7 @@ function create_table_question(data){
 }
 
 
+// Main function with loader
 function questions_main(){
     mainframe = document.getElementById("mainframe");
     mainframe.innerHTML = "";
