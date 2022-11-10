@@ -29,7 +29,6 @@ div.content_body{
     background-color: #57b846;
     width: 200px;
     height: 50px;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
     border-radius: 100px;
     color: white;
@@ -57,6 +56,23 @@ div.danger{
     text-align: center;
     vertical-align: middle;
     border-radius: 20px;
+    border: 1px solid black;
+    padding: 5px;
+    transition: all 1s;
+}
+
+
+div.danger_signup{
+    background-color: red;
+    width: 200px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 5px;
 }
 
 /* Login and Signup page design end */
@@ -115,6 +131,8 @@ table.general_table_design td:nth-child(3){
 
 /* Table design end */
 
+
+/* Porifle and welcome page design */
 div.welcome_page{
     margin-left: auto;
     margin-right: auto;
@@ -135,6 +153,8 @@ div.profile{
     margin-right: auto;
     width: 500px;
 }
+
+/* Porifle and welcome page design end */
 
 /* Questionnaire form design */
 div.quest_box{
