@@ -11,8 +11,8 @@
                 <h3>Sign Up</h3>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
-                        <div class="danger">
-                            {{ messages[0] }}
+                        <div class="danger_signup">
+                            <p>{{ messages[0] }}</p>
                         </div>
                     {% endif %}
                     {% endwith %}
