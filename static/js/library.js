@@ -1,6 +1,6 @@
 function get_answers(){
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET","/get_answers_by_user",true)
+    xmlHttp.open("GET","/get_all_answer_by_user",true)
     xmlHttp.setRequestHeader("Content-Type","application/json;charset=UTF-8");
     xmlHttp.onload = function(){
         rsp = JSON.parse(xmlHttp.response)
