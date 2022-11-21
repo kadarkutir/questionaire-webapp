@@ -19,7 +19,3 @@ document.addEventListener('mouseup', function(e) {
         container2.style.width = "0";
     }
 });
-
-function closeNavProfile(){
-    document.getElementById("mySidenavProfile").style.width = "0";
-}
